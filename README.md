@@ -4,6 +4,8 @@ This Share plugin enables users to edit HTML documents within Etherpad lite from
 
 Tested with Enterprise 4.2.*, but it should work with any new-ish version of Alfresco.  Requires Dojo.
 
+![image](etherpad-alfresco.gif)
+
 ## Installation
 
 * On somewhere which has the JDK and Gradle installed, run `gradle jar` from the `share` directory.
