@@ -1,0 +1,39 @@
+<alfresco-config>
+
+    <config evaluator="string-compare" condition="DocLibActions">
+        <actions>
+            <action id="document-etherpad-edit" type="pagelink" label="actions.document.etherpad-edit">
+                <param name="page">etherpad-edit?nodeRef={node.nodeRef}</param>
+                <permissions>
+                    <permission allow="true">Write</permission>
+                </permissions>
+                <evaluator>evaluator.doclib.action.etherpadEditMimetype</evaluator>
+                <evaluator>evaluator.doclib.action.editableByCurrentUser</evaluator>
+                <evaluator negate="true">evaluator.doclib.action.isLocked</evaluator>
+            </action>
+        </actions>
+        <actionGroups>
+            <actionGroup id="document-browse">
+                <action index="90" id="document-etherpad-edit" />
+            </actionGroup>
+            <actionGroup id="document-details">
+                <action index="90" id="document-etherpad-edit" />
+            </actionGroup>
+        </actionGroups>
+    </config>
+
+    <config evaluator="string-compare" condition="Remote">
+        <remote>
+
+            <connector>
+                <id>etherpad</id>
+                <name>Etherpad Connector</name>
+                <description>Connector for Etherpad API</description>
+                <class>com.parashift.etherpad.EtherpadConnector</class>
+            </connector>
+
+        </remote>
+    </config>
+
+
+</alfresco-config>

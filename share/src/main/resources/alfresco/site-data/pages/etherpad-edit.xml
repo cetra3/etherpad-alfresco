@@ -1,0 +1,9 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<page>
+   <title>Edit in Etherpad</title>
+   <title-id>page.etherpad-edit.title</title-id>
+   <description>Edit in Etherpad</description>
+   <description-id>page.etherpad-edit.description</description-id>
+   <template-instance>etherpad-edit</template-instance>
+   <authentication>user</authentication>
+</page>

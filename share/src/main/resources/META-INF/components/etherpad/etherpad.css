@@ -1,0 +1,8 @@
+#editorFrame {
+    width: 100%;
+    border: 1px solid grey;
+}
+
+.etherpad-editor {
+    padding-bottom: 10px;
+}
