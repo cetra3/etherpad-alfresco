@@ -10,7 +10,7 @@ padID = url.args.nodeRef.split("/").pop();
 
 //Get the current User count.
 res = eConn.get("padUsersCount?padID=" + padID);
-userCount = JSON.parse(res);
+userCount = eval('(' + res + ')');
 
 //This will throw an exception if the API key is wrong.
 if(userCount.data.padUsersCount == 0) {
