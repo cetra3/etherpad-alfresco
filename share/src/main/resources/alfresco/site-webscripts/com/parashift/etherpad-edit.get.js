@@ -21,6 +21,13 @@ if(userCount.data.padUsersCount == 0) {
 if(sendUpdate) {
     contentUrl = "/api/node/content/" + url.args.nodeRef.replace("://", "/");
     contentData = remote.call(contentUrl);
+
+    //The Alfresco editor does not include <html> directives by default
+    //Causes an etherpad error: TypeError: Cannot read property 'tagName' of undefined
+    //Etherpad's SetPadHTML expects there to be at minimum a HTML directive.
+    if(String(contentData).toLowerCase().indexOf("<html>") == -1) {
+        contentData = "<html>" + contentData + "</html>";
+    }
     //Create the pad, we don't really care if this fails.
     createPad = eConn.get("createPad?padID=" + padID);
     resetHTML = eConn.get("setHTML?padID=" + padID + "&html=" + encodeURIComponent(contentData));
