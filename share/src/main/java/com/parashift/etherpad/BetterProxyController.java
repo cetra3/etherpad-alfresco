@@ -5,7 +5,6 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.extensions.config.RemoteConfigElement;
 import org.springframework.extensions.surf.exception.WebScriptsPlatformException;
 import org.springframework.extensions.surf.util.Base64;
-import org.springframework.extensions.surf.util.URLEncoder;
 import org.springframework.extensions.webscripts.connector.*;
 import org.springframework.extensions.webscripts.servlet.mvc.EndPointProxyController;
 import org.springframework.web.servlet.HandlerMapping;
@@ -14,9 +13,14 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
 import java.util.*;
 
 /**
+ * BetterProxyController handles URLs in a less opinionated way
+ * Mainly because the URL to socket.io in Etherpad is now /socket.io/?
+ * This is stripped to /socket.io? in EndPointProxyController
+ * Also indexOf & substring is faster than StringBuffer!
  * Created by cetra on 16/01/15.
  */
 public class BetterProxyController extends EndPointProxyController {
@@ -145,7 +149,7 @@ public class BetterProxyController extends EndPointProxyController {
             }
             else
             {
-                res.setStatus(HttpServletResponse.SC_UNAUTHORIZED,
+                res.sendError(HttpServletResponse.SC_UNAUTHORIZED,
                         "No USER_ID found in session and requested endpoint requires authentication.");
 
                 // no further processing as authentication is required but not provided
@@ -154,7 +158,7 @@ public class BetterProxyController extends EndPointProxyController {
 
             // build a connector context, stores information about how we will drive the remote client
             // ensure we don't proxy over any browser to web-tier Authorization headers over to the endpoint
-            Map<String, String> headers = new HashMap<String, String>(1, 1.0f);
+            Map<String, String> headers = new HashMap<>(1, 1.0f);
             headers.put("Authorization", null);
             ConnectorContext context = new ConnectorContext(
                     HttpMethod.valueOf(req.getMethod().toUpperCase()), null, headers);
@@ -197,9 +201,8 @@ public class BetterProxyController extends EndPointProxyController {
         return null;
     }
 
-    private void authorizedResponseStatus(HttpServletResponse res)
-    {
-        res.setStatus(HttpServletResponse.SC_UNAUTHORIZED,
+    private void authorizedResponseStatus(HttpServletResponse res) throws IOException {
+        res.sendError(HttpServletResponse.SC_UNAUTHORIZED,
                 "No USER_ID found in session and requested endpoint requires authentication.");
         res.setHeader("WWW-Authenticate", "Basic realm=\"Alfresco\"");
     }
