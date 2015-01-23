@@ -56,20 +56,6 @@ To find the API key, check for the file `APIKEY.txt` on your etherpad instance.
 </config>
 ```
 
-#### Example CSRF Policy
-```
-<config evaluator="string-compare" condition="CSRFPolicy">
-	<filter>
-		  <rule>
-            <request>
-               <method>POST</method>
-               <path>/proxy/etherpad/.*</path>
-            </request>
-         </rule>
-	</filter>
-</config>
-```
-
 ## CSRF Instructions
 
 Because CSRF is enabled for all POST requests, we need to override the default CSRF policy to switch it off for POST requests to the etherpad proxy.
@@ -88,7 +74,7 @@ You can switch off the CSRF Policy completely by using this statement (not recom
 Or you can copy the CSRFPolicy configuration from [this file](https://svn.alfresco.com/repos/alfresco-open-mirror/alfresco/HEAD/root/projects/slingshot/config/alfresco/share-security-config.xml) and then add the example in the etherpad-alfresco readme. So you would end up with a config section like this in your share-config-custom.xml:
 
 ```
-<config evaluator="string-compare" condition="CSRFPolicy">
+<config evaluator="string-compare" condition="CSRFPolicy" replace="true">
 	<filter>
 		<rule>
 			<request>
