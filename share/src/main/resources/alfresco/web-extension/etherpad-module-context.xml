@@ -34,7 +34,7 @@
         </property>
     </bean>
 
-    <bean id="endpointController" class="com.parashift.etherpad.BetterProxyController">
+    <bean id="etherpadEndpointController" class="com.parashift.etherpad.EtherpadProxyController">
         <property name="cacheSeconds" value="-1" />
         <property name="useExpiresHeader"><value>true</value></property>
         <property name="useCacheControlHeader"><value>true</value></property>
@@ -43,6 +43,32 @@
         <property name="supportedMethods"><null/></property>
         <property name="proxyControllerInterceptor" ref="slingshotProxyControllerInterceptor" />
     </bean>
+
+    <bean id="webframeworkHandlerMappings" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping" abstract="true">
+        <property name="urlPathHelper" ref="urlPathHelper" />
+        <property name="pathMatcher" ref="pathMatcher" />
+        <property name="interceptors">
+            <list>
+                <ref bean="requestContextInterceptor"/>
+                <ref bean="userDashboardInterceptor"/>
+                <ref bean="editionInterceptor"/>
+                <ref bean="cookieInterceptor"/>
+            </list>
+        </property>
+        <property name="mappings">
+            <value>
+                /system/**=remoteController
+                /proxy/etherpad/**=etherpadEndpointController
+                /proxy/**=endpointController
+                /resource/**=resourceController
+                /feed/**=feedController
+                /dologin/**=loginController
+                /dologout/**=logoutController
+                /generator/**=generatorController
+            </value>
+        </property>
+    </bean>
+
 
 
 

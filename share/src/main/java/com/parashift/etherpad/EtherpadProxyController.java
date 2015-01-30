@@ -23,36 +23,17 @@ import java.util.*;
  * Also indexOf & substring is faster than StringBuffer!
  * Created by cetra on 16/01/15.
  */
-public class BetterProxyController extends EndPointProxyController {
+public class EtherpadProxyController extends EndPointProxyController {
 
-    private static Log logger = LogFactory.getLog(BetterProxyController.class);
+    private static Log logger = LogFactory.getLog(EtherpadProxyController.class);
 
-    private static final String JSESSIONID = ";jsessionid=";
     private static final String USER_ID = "_alf_USER_ID";
-
+    private static final String endpointId = "etherpad";
 
     @Override
     public ModelAndView handleRequestInternal(HttpServletRequest req, HttpServletResponse res) throws Exception {
-        // get the portion of the uri beyond the handler mapping (resolved by Spring)
-        String uri = (String) req.getAttribute(HandlerMapping.PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE);
-        if(logger.isDebugEnabled()) {
-            logger.debug("Handler Mapping return uri is: " + uri);
-        }
-        // handle Flash uploader specific jsession parameter for conforming to servlet spec on later TomCat 6/7 versions
-        int jsessionid;
-        if ((jsessionid = uri.indexOf(JSESSIONID)) != -1)
-        {
-            uri = uri.substring(0, jsessionid);
-        }
 
-        String endpointId;
-
-        if(uri.contains("/")) {
-            endpointId = uri.substring(0, uri.indexOf("/"));
-        } else {
-            endpointId = uri;
-        }
-
+        
         // rebuild rest of the URL for the proxy request
         StringBuilder buf = new StringBuilder(64);
 
@@ -92,7 +73,7 @@ public class BetterProxyController extends EndPointProxyController {
                 // proceed on the assumption it will be dealt with later
                 connector = this.connectorService.getConnector(endpointId, req.getSession());
             }
-            else if (descriptor.getBasicAuth() || this.proxyControllerInterceptor.allowHttpBasicAuthentication(descriptor, uri))
+            else if (descriptor.getBasicAuth() || this.proxyControllerInterceptor.allowHttpBasicAuthentication(descriptor, reqUri))
             {
                 // check for HTTP authorisation request (i.e. RSS feeds, direct links etc.)
                 String authorization = req.getHeader("Authorization");
@@ -162,7 +143,7 @@ public class BetterProxyController extends EndPointProxyController {
             headers.put("Authorization", null);
             ConnectorContext context = new ConnectorContext(
                     HttpMethod.valueOf(req.getMethod().toUpperCase()), null, headers);
-            context.setExceptionOnError(this.proxyControllerInterceptor.exceptionOnError(descriptor, uri));
+            context.setExceptionOnError(this.proxyControllerInterceptor.exceptionOnError(descriptor, reqUri));
             context.setContentType(req.getContentType());
 
             // build proxy URL referencing the endpoint
@@ -171,7 +152,7 @@ public class BetterProxyController extends EndPointProxyController {
 
             if (logger.isDebugEnabled())
             {
-                logger.debug("EndPointProxyController preparing to proxy:");
+                logger.debug("EtherpadProxyController preparing to proxy:");
                 logger.debug(" - endpointId: " + endpointId);
                 logger.debug(" - userId: " + userId);
                 logger.debug(" - connector: " + connector);
