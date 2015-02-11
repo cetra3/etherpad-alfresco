@@ -24,19 +24,37 @@ require(["dojo/dom", "dojo/query", "dojo/on", "dojo/request", "dojo/domReady!"],
 
          //This is to remove any CSS and title elements and just include the body of the HTML
          //Regex doesn't seem to work
-         beginHtml = htmlData.search("<body>")
-         endHtml = htmlData.search("</body>");
+         var beginHtml = htmlData.search("<body>")
+         var endHtml = htmlData.search("</body>");
+
+         var htmlSubmission = "<html>" + htmlData.substring(beginHtml, endHtml + 7) + "</html>";
+
+         var postHeaders = {
+            "Content-Type" : "application/json"
+         }
+
+         if (Alfresco.util.CSRFPolicy && Alfresco.util.CSRFPolicy.isFilterEnabled()) {
+            postHeaders[Alfresco.util.CSRFPolicy.getHeader()] = Alfresco.util.CSRFPolicy.getToken();
+         }
 
          request.post(Alfresco.constants.PROXY_URI_RELATIVE + "api/node/" + nodeRef.replace("://", "/") + "/formprocessor", {
-            headers: {
-                "Content-Type" : "application/json",
-            },
+            headers: postHeaders,
             data : JSON.stringify({
-               prop_cm_content : htmlData.substring(beginHtml, endHtml + 7)
+               prop_cm_content : htmlSubmission
             })
          }).then(function() {
             Alfresco.util.PopupManager.displayMessage({"text": "Update Submitted"});
+         }, function (err) {
+            //Tries to find the exception from the error page and send a prompt
+            beginException = err.response.data.search("<!--") + 4;
+            endException = err.response.data.search("-->");
+            Alfresco.util.PopupManager.displayPrompt({"title": "Error Updating Alfresco",
+                                                      "text" : err.message + "\n " + err.response.data.substring(beginException, endException)});
          });
+
+    }, function(err) {
+      Alfresco.util.PopupManager.displayPrompt({"title": "Error Getting HTML",
+                                          "text" : err.message});
 
     });
 

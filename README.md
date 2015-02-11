@@ -2,7 +2,7 @@
 
 This Share plugin enables users to edit HTML documents within Etherpad lite from Alfresco Share.  This will create a new **Edit in Etherpad** action within the document library for HTML documents.  This allows multiple users to collaborate in real time and to save back those changes to Alfresco.
 
-Tested with Enterprise 4.2.*, but it should work with any new-ish version of Alfresco.  Requires Dojo.
+Tested with Enterprise 4.2.*, 5.0.* and Community 4.2.*, 5.0.*
 
 ![image](etherpad-alfresco.gif)
 
@@ -97,4 +97,3 @@ What this accomplishes is that you have the default CSRFPolicy, so you are secur
 * Handle error cases alot better (wrong API Key, etc..)
 * Provide some documentation on setting up etherpad correctly
 * Support text documents
-* Test on Community and earlier versions of Enterprise
