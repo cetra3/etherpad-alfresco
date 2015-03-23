@@ -1,0 +1,75 @@
+<alfresco-config>
+
+	<!-- Disable the CSRF Token Filter -->
+	<config evaluator="string-compare" condition="CSRFPolicy"
+		replace="true">
+		<filter />
+	</config>
+
+	<config evaluator="string-compare" condition="Remote">
+		<remote>
+			<endpoint>
+				<id>alfresco-noauth</id>
+				<name>Alfresco - unauthenticated access</name>
+				<description>Access to Alfresco Repository WebScripts that do not
+					require authentication</description>
+				<connector-id>alfresco</connector-id>
+				<endpoint-url>http://localhost:8080/alfresco/s</endpoint-url>
+				<identity>none</identity>
+			</endpoint>
+
+			<endpoint>
+				<id>alfresco</id>
+				<name>Alfresco - user access</name>
+				<description>Access to Alfresco Repository WebScripts that require
+					user authentication</description>
+				<connector-id>alfresco</connector-id>
+				<endpoint-url>http://localhost:8080/alfresco/s</endpoint-url>
+				<identity>user</identity>
+			</endpoint>
+
+			<endpoint>
+				<id>alfresco-feed</id>
+				<name>Alfresco Feed</name>
+				<description>Alfresco Feed - supports basic HTTP authentication via
+					the EndPointProxyServlet</description>
+				<connector-id>http</connector-id>
+				<endpoint-url>http://localhost:8080/alfresco/s</endpoint-url>
+				<basic-auth>true</basic-auth>
+				<identity>user</identity>
+			</endpoint>
+
+			<endpoint>
+				<id>activiti-admin</id>
+				<name>Activiti Admin UI - user access</name>
+				<description>Access to Activiti Admin UI, that requires user
+					authentication</description>
+				<connector-id>activiti-admin-connector</connector-id>
+				<endpoint-url>http://localhost:8080/alfresco/activiti-admin</endpoint-url>
+				<identity>user</identity>
+			</endpoint>
+
+			<endpoint>
+				<id>etherpad</id>
+				<name>Etherpad - unauthenticated access</name>
+				<description>Etherpad access</description>
+				<connector-id>http</connector-id>
+				<endpoint-url>http://127.0.0.1:9001</endpoint-url>
+				<identity>none</identity>
+			</endpoint>
+
+			<endpoint>
+				<id>etherpad-api</id>
+				<name>Etherpad - API access</name>
+				<description>Etherpad access</description>
+				<connector-id>etherpad</connector-id>
+				<endpoint-url>http://127.0.0.1:9001/api/1/</endpoint-url>
+				<identity>declared</identity>
+				<username>apikey</username>
+				<password>0accb8abbbe5960936de1d3b5414655c257c1365be2952dcf8ea3028614befef</password>
+				<unsecure>true</unsecure>
+			</endpoint>
+		</remote>
+	</config>
+
+</alfresco-config>
