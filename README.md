@@ -22,7 +22,7 @@ Using Gradle
 
 Using Maven
 
-* mvn install and copy target/etherpad-share.jar into your Share's WEB-INF/lib Directory
+* mvn install and copy target/etherpad-share.amp into share_amps, java -jar bin/alfresco-mmt.jar install share_amps/etherpad-share.amp tomcat/webapps/share
 
 * Execute run.sh if you want an Alfresco environment. You need PostgreSQL running for that.
 
