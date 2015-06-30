@@ -8,6 +8,8 @@ Tested with Enterprise 4.2.\*, 5.0.\* and Community 4.2.\*, 5.0.\*
 
 ## Installation
 
+Using Gradle
+
 * On somewhere which has the JDK and Gradle installed, run `gradle jar` from the `share` directory.
 
 * Copy `etherpad-integration-share.jar` from `share/build/libs/` into your Share's `WEB-INF/lib/` Directory
@@ -17,6 +19,12 @@ Tested with Enterprise 4.2.\*, 5.0.\* and Community 4.2.\*, 5.0.\*
 * Update your `share-config-custom.xml` to disable CSRF actions for the etherpad endpoint, see **CSRF Instructions** below
 
 * Restart Alfresco Share
+
+Using Maven
+
+* mvn install and copy target/etherpad-share.jar into your Share's WEB-INF/lib Directory
+
+* Execute run.sh if you want an Alfresco environment. You need PostgreSQL running for that.
 
 ### Example share-config-custom.xml
 
