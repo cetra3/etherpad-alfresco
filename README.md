@@ -6,11 +6,27 @@ Tested with Enterprise 4.2.\*, 5.0.\* and Community 4.2.\*, 5.0.\*
 
 ![image](etherpad-alfresco.gif)
 
+## Compiling
+
+You will need:
+
+* Java 7 SDK or above
+
+* Maven or Gradle
+
+### Maven
+
+* Run `mvn package` from the `share` directory
+
+### Gradle
+
+* You will need Parashift's alfresco amp plugin from here: https://bitbucket.org/parashift/alfresco-amp-plugin
+
+* Run `gradle amp` from the `share` directory
+
 ## Installation
 
-* On somewhere which has the JDK and Gradle installed, run `gradle jar` from the `share` directory.
-
-* Copy `etherpad-integration-share.jar` from `share/build/libs/` into your Share's `WEB-INF/lib/` Directory
+* Deploy the amp using Alfresco MMT or copy the etherpad jar to the WEB-INF/lib/ directory of share
 
 * Update your `share-config-custom.xml` to include two new endpoints, `etherpad` and `etherpad-api`.  `etherpad` is for end users and `etherpad-api` is only for Share to update content from Alfresco and setup pads.
 
@@ -71,7 +87,7 @@ You can switch off the CSRF Policy completely by using this statement (not recom
 ```
 
 
-Or you can copy the CSRFPolicy configuration from [this file](https://svn.alfresco.com/repos/alfresco-open-mirror/alfresco/HEAD/root/projects/slingshot/config/alfresco/share-security-config.xml) and then add the example in the etherpad-alfresco readme. So you would end up with a config section like this in your share-config-custom.xml:
+Or you can copy the CSRFPolicy configuration from [this file](https://svn.alfresco.com/repos/alfresco-open-mirror/alfresco/COMMUNITYTAGS/V5.0.d/root/projects/slingshot/config/alfresco/share-security-config.xml) and then add the example in the etherpad-alfresco readme. So you would end up with a config section like this in your share-config-custom.xml:
 
 ```
 <config evaluator="string-compare" condition="CSRFPolicy" replace="true">
@@ -88,7 +104,6 @@ Or you can copy the CSRFPolicy configuration from [this file](https://svn.alfres
 ```
 
 What this accomplishes is that you have the default CSRFPolicy, so you are secure, but you enable POST requests to pass through unfiltered to etherpad.  You must include the etherpad filter rule first, as `share-security-config.xml` is loaded before `share-config-custom.xml`
-
 
 
 ## Todo
